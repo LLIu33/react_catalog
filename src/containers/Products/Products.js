@@ -31,6 +31,7 @@ export default class Products extends Component {
     initializeWithKey: PropTypes.func.isRequired,
     editing: PropTypes.object.isRequired,
     load: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired,
     editStart: PropTypes.func.isRequired
   };
 
@@ -38,6 +39,10 @@ export default class Products extends Component {
     const handleEdit = (product) => {
       const {editStart} = this.props; // eslint-disable-line no-shadow
       return () => editStart(String(product.id));
+    };
+    const removeItem = (productId) => {
+      const {remove} = this.props;
+      return remove(productId);
     };
     const {products, error, editing, loading, load} = this.props;
     const addNew = () => {
@@ -53,15 +58,6 @@ export default class Products extends Component {
       this.setState({ products: products });
       return editStart(String(product.id));
     };
-    const remove = (productId) => {
-      for (let index = 0; index < products.length; index++) {
-        if (products[index].id === productId) {
-          products.splice(index, 1);
-          break;
-        }
-      }
-      this.setState({ products: products });
-    };
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
       refreshClassName += ' fa-spin';
@@ -76,13 +72,6 @@ export default class Products extends Component {
           </button>
         </h1>
         <Helmet title="Products"/>
-        <p>
-          If you hit refresh on your browser, the data loading will take place on the server before the page is returned.
-          If you navigated here from another page, the data was fetched from the client after the route transition.
-          This uses the decorator method <code>@asyncConnect</code> with the <code>deferred: true</code> flag. To block
-          a route transition until some data is loaded, remove the <code>deffered: true</code> flag.
-          To always render before loading data, even on the server, use <code>componentDidMount</code>.
-        </p>
         <p>
           This products are stored in your session, so feel free to edit it and refresh.
         </p>
@@ -122,7 +111,7 @@ export default class Products extends Component {
                   </button>
                 </td>
                 <td className={styles.buttonCol}>
-                  <button className="btn btn-danger" onClick={() => remove(product.id)}>
+                  <button className="btn btn-danger" onClick={() => removeItem(product.id)}>
                     <i className="fa fa-remove"/> Remove
                   </button>
                 </td>

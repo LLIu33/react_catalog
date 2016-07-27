@@ -5,11 +5,22 @@ export default function update(req) {
     load(req).then(data => {
       const products = data;
       const product = req.body;
-      if (product.color === 'Green') {
+
+      for (let index = 0; index < products.length; index++) {
+        if (products[index].code === product.code && products[index].id !== product.id) {
+          reject({
+            code: 'Product Code must be unique'
+          });
+          break;
+        }
+      }
+
+      if (isNaN(product.price)) {
         reject({
-          color: 'We do not accept green widgets' // example server-side validation error
+          price: 'Product Price must be number'
         });
       }
+
       if (product.id) {
         products[product.id - 1] = product;  // id is 1-based. please don't code like this in production! :-)
         req.session.products = products;

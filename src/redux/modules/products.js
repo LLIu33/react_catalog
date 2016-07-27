@@ -91,12 +91,11 @@ export default function reducer(state = initialState, action = {}) {
         }
       } : state;
     case DELETE:
-      return state; //
+      return state;
     case DELETE_SUCCESS:
-      data[action.result.id - 1] = action.result;
       return {
         ...state,
-        data: data,
+        data: action.result,
         editing: {
           ...state.editing,
           [action.id]: false
@@ -109,7 +108,7 @@ export default function reducer(state = initialState, action = {}) {
     case DELETE_FAIL:
       return typeof action.error === 'string' ? {
         ...state,
-        saveError: {
+        deleteError: {
           ...state.deleteError,
           [action.id]: action.error
         }
@@ -143,8 +142,9 @@ export function save(product) {
 export function remove(productId) {
   return {
     types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
+    id: productId,
     promise: (client) => client.post('/product/remove', {
-      data: productId
+      data: { productId: productId }
     })
   };
 }
