@@ -40,6 +40,28 @@ export default class Products extends Component {
       return () => editStart(String(product.id));
     };
     const {products, error, editing, loading, load} = this.props;
+    const addNew = () => {
+      const {editStart} = this.props;
+      const productId = products[products.length - 1].id + 1;
+      const product = {
+        id: productId,
+        code: 'Yellow',
+        name: 'Bob',
+        price: 10
+      };
+      products.push(product);
+      this.setState({ products: products });
+      return editStart(String(product.id));
+    };
+    const remove = (productId) => {
+      for (let index = 0; index < products.length; index++) {
+        if (products[index].id === productId) {
+          products.splice(index, 1);
+          break;
+        }
+      }
+      this.setState({ products: products });
+    };
     let refreshClassName = 'fa fa-refresh';
     if (loading) {
       refreshClassName += ' fa-spin';
@@ -70,6 +92,9 @@ export default class Products extends Component {
           {' '}
           {error}
         </div>}
+        <button className="btn btn-info" onClick={addNew}>
+          <i className="fa fa-plus"/> Add new product
+        </button>
         {products && products.length &&
         <table className="table table-striped">
           <thead>
@@ -78,6 +103,7 @@ export default class Products extends Component {
             <th className={styles.codeCol}>Code</th>
             <th className={styles.nameCol}>Name</th>
             <th className={styles.priceCol}>Price</th>
+            <th className={styles.buttonCol}></th>
             <th className={styles.buttonCol}></th>
           </tr>
           </thead>
@@ -93,6 +119,11 @@ export default class Products extends Component {
                 <td className={styles.buttonCol}>
                   <button className="btn btn-primary" onClick={handleEdit(product)}>
                     <i className="fa fa-pencil"/> Edit
+                  </button>
+                </td>
+                <td className={styles.buttonCol}>
+                  <button className="btn btn-danger" onClick={() => remove(product.id)}>
+                    <i className="fa fa-remove"/> Remove
                   </button>
                 </td>
               </tr>)

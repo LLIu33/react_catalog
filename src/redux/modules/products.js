@@ -1,16 +1,29 @@
+// Fetch Product
 const LOAD = 'redux-example/products/LOAD';
 const LOAD_SUCCESS = 'redux-example/products/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/products/LOAD_FAIL';
+
+// Edit Product
 const EDIT_START = 'redux-example/products/EDIT_START';
 const EDIT_STOP = 'redux-example/products/EDIT_STOP';
+
+// Save Product
 const SAVE = 'redux-example/products/SAVE';
 const SAVE_SUCCESS = 'redux-example/products/SAVE_SUCCESS';
 const SAVE_FAIL = 'redux-example/products/SAVE_FAIL';
 
+// Delete Product
+const DELETE = 'redux-example/products/DELETE';
+const DELETE_SUCCESS = 'redux-example/products/DELETE_SUCCESS';
+const DELETE_FAIL = 'redux-example/products/DELETE_FAIL';
+
+
 const initialState = {
   loaded: false,
   editing: {},
-  saveError: {}
+  saveError: {},
+  createError: {},
+  deleteError: {}
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -77,6 +90,30 @@ export default function reducer(state = initialState, action = {}) {
           [action.id]: action.error
         }
       } : state;
+    case DELETE:
+      return state; //
+    case DELETE_SUCCESS:
+      data[action.result.id - 1] = action.result;
+      return {
+        ...state,
+        data: data,
+        editing: {
+          ...state.editing,
+          [action.id]: false
+        },
+        deleteError: {
+          ...state.deleteError,
+          [action.id]: null
+        }
+      };
+    case DELETE_FAIL:
+      return typeof action.error === 'string' ? {
+        ...state,
+        saveError: {
+          ...state.deleteError,
+          [action.id]: action.error
+        }
+      } : state;
     default:
       return state;
   }
@@ -99,6 +136,15 @@ export function save(product) {
     id: product.id,
     promise: (client) => client.post('/product/update', {
       data: product
+    })
+  };
+}
+
+export function remove(productId) {
+  return {
+    types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
+    promise: (client) => client.post('/product/remove', {
+      data: productId
     })
   };
 }
