@@ -32,7 +32,8 @@ export default class Products extends Component {
     editing: PropTypes.object.isRequired,
     load: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
-    editStart: PropTypes.func.isRequired
+    editStart: PropTypes.func.isRequired,
+    createStart: PropTypes.func.isRequired
   };
 
   render() {
@@ -46,17 +47,15 @@ export default class Products extends Component {
     };
     const {products, error, editing, loading, load} = this.props;
     const addNew = () => {
-      const {editStart} = this.props;
-      const productId = products[products.length - 1].id + 1;
+      const {createStart} = this.props;
       const product = {
-        id: productId,
-        code: 'Yellow',
-        name: 'Bob',
-        price: 10
+        code: '',
+        name: '',
+        price: 0
       };
       products.push(product);
       this.setState({ products: products });
-      return editStart(String(product.id));
+      return createStart();
     };
     let refreshClassName = 'fa fa-refresh';
     if (loading) {

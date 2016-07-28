@@ -1,18 +1,19 @@
 import load from './load';
 
-export default function update(req) {
+export default function create(req) {
   return new Promise((resolve, reject) => {
     load(req).then(data => {
       const products = data;
       const product = req.body;
-
+      let maxId = 0;
       for (let index = 0; index < products.length; index++) {
-        if (products[index].code === product.code && products[index].id !== product.id) {
+        if (products[index].code === product.code) {
           reject({
             code: 'Product Code must be unique'
           });
           break;
         }
+        maxId = (maxId < +products[index].id) ? +products[index].id : maxId;
       }
 
       if (isNaN(product.price)) {
@@ -20,14 +21,12 @@ export default function update(req) {
           price: 'Product Price must be number'
         });
       }
-      product.price = +product.price;
 
-      for (let index = 0; index < products.length; index++) {
-        if (products[index].id === product.id) {
-          products[index] = product;
-        }
-      }
+      product.id = maxId + 1;
+      product.price = +product.price;
+      products.push(product);
       req.session.products = products;
+
       resolve(product);
     }, err => {
       reject(err);

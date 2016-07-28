@@ -24,6 +24,7 @@ export default class ProductForm extends Component {
     invalid: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     save: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
     saveError: PropTypes.object,
     formKey: PropTypes.string.isRequired,
@@ -31,8 +32,27 @@ export default class ProductForm extends Component {
   };
 
   render() {
-    const { editStop, fields: {id, code, name, price}, formKey, handleSubmit, invalid,
-      pristine, save, submitting, saveError: { [formKey]: saveError }, values } = this.props;
+    const handleSubmit = (values) => {
+      const {save, create} = this.props;
+      if (values.id) {
+        save(values)
+        .then(result => {
+          if (result && typeof result.error === 'object') {
+            return Promise.reject(result.error);
+          }
+        });
+      } else {
+        create(values)
+        .then(result => {
+          if (result && typeof result.error === 'object') {
+            return Promise.reject(result.error);
+          }
+        });
+      }
+    };
+
+    const { editStop, fields: {id, code, name, price}, formKey, invalid,
+      pristine, submitting, saveError: { [formKey]: saveError }, values } = this.props;
     const styles = require('containers/Products/Products.scss');
     return (
       <tr className={submitting ? styles.saving : ''}>
@@ -56,13 +76,7 @@ export default class ProductForm extends Component {
             <i className="fa fa-ban"/> Cancel
           </button>
           <button className="btn btn-success"
-                  onClick={handleSubmit(() => save(values)
-                    .then(result => {
-                      if (result && typeof result.error === 'object') {
-                        return Promise.reject(result.error);
-                      }
-                    })
-                  )}
+                  onClick={() => handleSubmit(values)}
                   disabled={pristine || invalid || submitting}>
             <i className={'fa ' + (submitting ? 'fa-cog fa-spin' : 'fa-cloud')}/> Save
           </button>

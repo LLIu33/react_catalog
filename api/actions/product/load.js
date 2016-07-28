@@ -5,7 +5,7 @@ const initialProducts = [
   {id: 4, code: 'Blue', name: 'Paul', price: 2}
 ];
 
-export function getWidgets(req) {
+export function getProducts(req) {
   let products = req.session.products;
   if (!products) {
     products = initialProducts;
@@ -16,6 +16,6 @@ export function getWidgets(req) {
 
 export default function load(req) {
   return new Promise((resolve, reject) => {
-    resolve(getWidgets(req));
+    resolve(getProducts(req));
   });
 }
