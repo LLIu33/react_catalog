@@ -85,13 +85,13 @@ describe('Product', () => {
     expect(text).to.equal('Edit');
   });
 
-  // it('should render Cancel button after click by Edit', () => {
-  //   const row = dom.querySelector('tbody tr');
-  //   const editBtn = row.querySelector('.btn-primary');
-  //   // ReactTestUtils.Simulate.click(editBtn);
-  //   editBtn.click();
-  //   const targetBtn = dom.querySelector('tbody tr button');
-  //   expect(targetBtn.textContent.trim()).to.equal('Cancel');
-  // });
+  it('should render Cancel button after click by Edit', () => {
+    const row = dom.querySelector('tbody tr');
+    const editBtn = row.querySelector('.btn-primary');
+    // ReactTestUtils.Simulate.click(editBtn);
+    editBtn.click();
+    const targetBtn = dom.querySelector('tbody tr button');
+    expect(targetBtn.textContent.trim()).to.equal('Cancel');
+  });
 
 });
