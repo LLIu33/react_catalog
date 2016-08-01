@@ -19,6 +19,7 @@
 
 
     this.When(/^I attempt to update this existing data in the product catalogue with a new <"Price">$/, function (callback) {
+      this.browser.assert.element('tbody tr:first-child .btn-success');
       this.browser.pressButton('tbody tr:first-child .btn-success', callback);
     });
 

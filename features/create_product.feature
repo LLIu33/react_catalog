@@ -4,23 +4,16 @@ Feature:
 
   Scenario: valid product
 
-    Given that I am passing valid <Product Code> , <Product Name> and <Price>
+    Given that I am passing valid "Purple", "Joe" and "11"
     When I attempt to add this data to the product catalogue
     Then I receive a success message
     And the data has been entered into the database.
 
-  Example:
-  |Product Code         |Product Name        |Price        |
-  |FG001                |Red Umbrella        |12.59        |
 
-  Scenario: not valid product
+  # Scenario: not valid product
 
-    Given that I am passing valid <Product Code> and <Product Name> but invalid <Price>
-    When I attempt to add this data to the product catalogue
-    Then I receive an appropriate error response
-    And the data has NOT been entered into the database.
-
-  Example:
-  |Product Code        |Product Name       |Price         |
-  |FG001               |Red Umbrella       |12.a59        |
+  #   Given that I am passing valid "Orange" and "Mary" but invalid "12.a59"
+  #   When I attempt to add this data to the product catalogue
+  #   Then I receive an appropriate error response
+  #   And the data has NOT been entered into the database.
 

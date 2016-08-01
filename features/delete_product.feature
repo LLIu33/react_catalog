@@ -4,11 +4,7 @@ Feature:
 
   Scenario: delete valid product
 
-    Given that I am passing valid <Product Code>
+    Given that I am passing valid "Blue"
     When I attempt to delete thie related data in the product catalogue
     Then I receive a success message
     And the data has been deleted in the database
-
-  Example:
-  |Product Code         |Product Name        |Price        |
-  |FG001                |Red Umbrella        |12.59        |

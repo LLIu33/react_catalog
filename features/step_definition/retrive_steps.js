@@ -3,10 +3,10 @@
 
   function retrive_steps () {
 
-    this.Given(/^that I am passing valid "([^"]*)"$/, function (product_code, callback) {
-      this.browser.assert.text('tbody tr:first-child td:nth-child(2)', product_code);
-      callback();
-    });
+    // this.Given(/^that I am passing valid "([^"]*)"$/, function (product_code, callback) {
+    //   this.browser.assert.text('tbody tr:first-child td:nth-child(2)', product_code);
+    //   callback();
+    // });
 
     this.When(/^I attempt to bring back all related data$/, function (callback) {
        this.browser.assert.element('tbody tr:first-child td:nth-child(3)')
