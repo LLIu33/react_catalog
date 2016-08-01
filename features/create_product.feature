@@ -10,10 +10,10 @@ Feature:
     And the data has been entered into the database.
 
 
-  # Scenario: not valid product
+  Scenario: not valid product
 
-  #   Given that I am passing valid "Orange" and "Mary" but invalid "12.a59"
-  #   When I attempt to add this data to the product catalogue
-  #   Then I receive an appropriate error response
-  #   And the data has NOT been entered into the database.
+    Given that I am passing valid "Orange" and "Mary" but invalid "12.a59"
+    When I attempt to add this data to the product catalogue
+    Then I receive an appropriate error response
+    And the data has NOT been entered into the database.
 
