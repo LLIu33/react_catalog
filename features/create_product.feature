@@ -2,18 +2,24 @@
 Feature:
   As a user, I want to create new product entries in my product catalogue database, so that I can store new products into the system.
 
-  Scenario: valid product
+  Scenario Outline: valid product
 
-    Given that I am passing valid "Purple", "Joe" and "11"
+    Given that I am passing valid "<Product Code>" , "<Product Name>" and "<Price>"
     When I attempt to add this data to the product catalogue
     Then I receive a success message
     And the data has been entered into the database.
 
+  Examples:
+  |Product Code         |Product Name        |Price        |
+  |Yellow               |Jane                |5            |
 
-  Scenario: not valid product
+  Scenario Outline: not valid product
 
-    Given that I am passing valid "Orange" and "Mary" but invalid "12.a59"
+    Given that I am passing valid "<Product Code>" and "<Product Name>" but invalid "<Price>"
     When I attempt to add this data to the product catalogue
     Then I receive an appropriate error response
     And the data has NOT been entered into the database.
 
+  Examples:
+  |Product Code        |Product Name       |Price         |
+  |Purple              |John               |12.a59        |

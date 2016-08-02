@@ -2,9 +2,14 @@
   "use strict";
 
   function creaete_steps () {
-
-    this.Given(/^that I am passing valid "([^"]*)", "([^"]*)" and "([^"]*)"$/, function (product_code, product_name, product_price, callback) {
+    let product;
+    this.Given(/^that I am passing valid "([^"]*)" , "([^"]*)" and "([^"]*)"$/, function (product_code, product_name, product_price, callback) {
       const browser = this.browser;
+      product = {
+        code: product_code,
+        name: product_name,
+        price: product_price
+      };
       browser.pressButton('.btn-info', function() {
         browser
           .fill('code', product_code)
@@ -14,7 +19,6 @@
         callback();
       });
     });
-
 
     this.When(/^I attempt to add this data to the product catalogue$/, function (callback) {
       let saveBtn = this.browser.query('tbody tr .btn-success');
@@ -28,7 +32,7 @@
 
     this.Then(/^the data has been entered into the database\.$/, function (callback) {
       const allCodes = this.browser.text('tbody tr td:nth-child(2)');
-      const count = allCodes.split("Purple").length - 1;
+      const count = allCodes.split(product.code).length - 1;
       if (count === 1) {
         callback();
       } else {

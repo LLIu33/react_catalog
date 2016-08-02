@@ -1,12 +1,14 @@
 @RetrieveProduct
 Feature:
-  As a user,
-  I want to read existing product entries from my product catalogue database,
-  So that I can review what products currently exist in the system.
+  As a user, I want to read existing product entries from my product catalogue database, so that I can review what products currently exist in the system.
 
-  Scenario:
-    Given that I am passing valid "Red"
+  Scenario Outline:
+    Given that I am passing valid "<Product Code>"
     When I attempt to bring back all related data
     Then I receive a success message
-    And the data returned is "John" and "7"
+    And the data returned is "<Product Name>" and "<Price>"
+
+    Examples:
+    |Product Code         |Product Name        |Price        |
+    |Red                  |John                |7            |
 
